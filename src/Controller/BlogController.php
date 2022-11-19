@@ -4,45 +4,41 @@ namespace App\Controller;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 #[Route('/blog')]
 class BlogController extends AbstractController
 {
-    private SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
-
     #[Route('/', name: 'blog_index')]
-    public function index(): Response
+    public function index(SessionInterface $session): Response
     {
-        return $this->render('blot/index.html.twig', ['posts' => $this->session->get('posts')]);
+        return $this->render('blog/index.html.twig', ['posts' => $session->get('posts')]);
     }
 
     /**
      * @throws Exception
      */
     #[Route('/add', name: 'blog_add')]
-    public function add(): void
+    public function add(SessionInterface $session, RouterInterface $router): RedirectResponse
     {
-        $posts = $this->session->get('posts');
+        $posts = $session->get('posts');
         $posts[uniqid('post', true)] = [
             'title' => 'A random title ' . random_int(1, 500),
             'text' => 'Some random text nr ' . random_int(1, 500),
         ];
-        $this->session->set('posts', $posts);
+        $session->set('posts', $posts);
+        return new RedirectResponse($router->generate('blog_index'));
     }
 
     #[Route('/show/{id}', name: 'blog_show')]
-    public function show($id): Response
+    public function show(SessionInterface $session, $id): Response
     {
-        $posts = $this->session->get('posts');
+        $posts = $session->get('posts');
         if (!$posts || !isset($posts[$id])) {
             throw new NotFoundHttpException('Post not found');
         }
