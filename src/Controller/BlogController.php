@@ -2,29 +2,35 @@
 
 namespace App\Controller;
 
-use App\Service\Greeting;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/blog')]
 class BlogController extends AbstractController
 {
-    private Greeting $greeting;
+    private SessionInterface $session;
 
-    public function __construct(Greeting $greeting)
+    public function __construct(SessionInterface $session)
     {
-        $this->greeting = $greeting;
+        $this->session = $session;
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    #[Route('/{name}', name: 'blog_greeting')]
-    public function index($name): Response
+    #[Route('/', name: 'blog_index')]
+    public function index(): Response
     {
-        return $this->render('greeting.html.twig', ['message' => $this->greeting->greet($name)]);
+        return $this->render('blot/index.html.twig', ['posts' => $this->session->get('posts')]);
+    }
+
+    #[Route('/add', name: 'blog_add')]
+    public function add()
+    {
+
+    }
+    #[Route('/show/{id}', name: 'blog_show')]
+    public function show($id)
+    {
+
     }
 }
