@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +31,7 @@ class BlogController extends AbstractController
         $posts[uniqid('post', true)] = [
             'title' => 'A random title ' . random_int(1, 500),
             'text' => 'Some random text nr ' . random_int(1, 500),
+            'date' => new DateTime(),
         ];
         $session->set('posts', $posts);
         return new RedirectResponse($router->generate('blog_index'));
