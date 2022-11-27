@@ -11,9 +11,11 @@ import './styles/app.sass';
 // start the Stimulus application
 import './bootstrap';
 
-const $ = require('jquery');
+import $ from 'jquery';
 
-require('bootstrap')
+import 'bootstrap'
+import 'holderjs'
+
 
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover();
