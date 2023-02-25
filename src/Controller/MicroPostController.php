@@ -10,12 +10,18 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/micro-post')]
 class MicroPostController extends AbstractController
 {
-    #[Route('/', name: 'app_micro_post')]
+    #[Route('/', name: 'micro_post_index')]
     public function index(MicroPostRepository $microPostRepository): Response
     {
         return $this->render('micro_post/index.html.twig', [
             'posts' => $microPostRepository->findAll(),
             'controller_name' => 'MicroPostController',
         ]);
+    }
+
+    #[Route('/add', 'micro_post_add')]
+    public function add()
+    {
+        return $this->render('micro_post/add.html.twig');
     }
 }
