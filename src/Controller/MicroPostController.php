@@ -21,10 +21,7 @@ class MicroPostController extends AbstractController
     #[Route('/', name: 'micro_post_index')]
     public function index(MicroPostRepository $microPostRepository): Response
     {
-        return $this->render('micro_post/index.html.twig', [
-            'posts' => $microPostRepository->findAll(),
-            'controller_name' => 'MicroPostController',
-        ]);
+        return $this->render('micro_post/index.html.twig', ['posts' => $microPostRepository->findBy([], ['time' => 'DESC'])]);
     }
 
     #[Route('/add', 'micro_post_add')]
