@@ -52,6 +52,14 @@ class MicroPostController extends AbstractController
         return $this->render('micro_post/add.html.twig', ['form' => $form->createView()]);
     }
 
+    #[Route('/delete/{post}', name: 'micro_post_delete' )]
+    public function delete(MicroPost $post, EntityManagerInterface $entityManager, RouterInterface $router): Response
+    {
+        $entityManager->remove($post);
+        $entityManager->flush();
+        return new RedirectResponse($router->generate('micro_post_index'));
+    }
+
     #[Route('/{post}', name: 'micro_post_post')]
     public function post(MicroPost $post): Response
     {
