@@ -46,7 +46,6 @@ class MicroPostController extends AbstractController
         $form = $formFactory->create(MicroPostType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($post);
             $entityManager->flush();
             return new RedirectResponse($router->generate('micro_post_index'));
         }
