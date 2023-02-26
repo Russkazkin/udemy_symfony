@@ -57,6 +57,7 @@ class MicroPostController extends AbstractController
     {
         $entityManager->remove($post);
         $entityManager->flush();
+        $this->addFlash('success', 'Post was deleted');
         return new RedirectResponse($router->generate('micro_post_index'));
     }
 
