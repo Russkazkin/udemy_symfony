@@ -7,5 +7,8 @@
             <span class="d-block"><strong class="text-gray-dark">@username</strong> <small>· {{ post.time|date("d/m/Y") }}</small></span>
             {{ post.text }}
         </p>
+        <small class="d-block mt-3 text-end">
+            <a href="{{ path('micro_post_edit', {'post': post.id}) }}">Edit</a>
+        </small>
     </div>
 {% endblock %}

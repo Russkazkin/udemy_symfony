@@ -32,16 +32,26 @@ class MicroPostController extends AbstractController
 
         $form = $formFactory->create(MicroPostType::class, $microPost);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($microPost);
             $entityManager->flush();
             return new RedirectResponse($router->generate('micro_post_index'));
         }
-
         return $this->render('micro_post/add.html.twig', ['form' => $form->createView()]);
     }
 
+    #[Route('/edit/{post}', name: 'micro_post_edit')]
+    public function edit(MicroPost $post, Request $request, FormFactoryInterface $formFactory, EntityManagerInterface $entityManager, RouterInterface $router): Response
+    {
+        $form = $formFactory->create(MicroPostType::class, $post);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($post);
+            $entityManager->flush();
+            return new RedirectResponse($router->generate('micro_post_index'));
+        }
+        return $this->render('micro_post/add.html.twig', ['form' => $form->createView()]);
+    }
 
     #[Route('/{post}', name: 'micro_post_post')]
     public function post(MicroPost $post): Response
